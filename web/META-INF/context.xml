@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/NanoBook_Project3_v1"> 
+    <Resource name="jdbc/LMTruong" auth="Container" type="javax.sql.DataSource"
+               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+               username="lmtbit" password="truongdzai" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost:3306/nanobook"/>
+<!--       <Resource
+    	  name="jdbc/LMTruong"
+    	  auth="Container"
+    	  type="javax.sql.DataSource"
+    	  factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+    	  initialSize="34"
+    	  maxActive="377"
+    	  maxIdle="233"
+    	  minIdle="89"
+    	  timeBetweenEvictionRunsMillis="34000"
+    	  minEvictableIdleTimeMillis="55000"
+    	  validationQuery="SELECT 1"
+    	  validationInterval="34000"
+    	  testOnBorrow="true"
+    	  removeAbandoned="true"
+    	  removeAbandonedTimeout="55"
+    	  username="lmtbit"
+    	  password="truongdzai"
+    	  driverClassName="com.mysql.jdbc.Driver"
+    	  url="jdbc:mysql://localhost:3306/lmtruong?allowMultiQueries=true"
+     />-->
+</Context>
