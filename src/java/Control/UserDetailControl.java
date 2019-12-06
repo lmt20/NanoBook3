@@ -5,7 +5,6 @@
  */
 package Control;
 
-import IO.IOUserTransaction;
 import IODB.InvoiceDB;
 import Model.Invoice;
 import Model.User;

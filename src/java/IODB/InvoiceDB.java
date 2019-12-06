@@ -74,6 +74,7 @@ public class InvoiceDB {
                 Cart cart = new Cart(listLine);
                 invoice.setCart(cart);
                 invoice.setPaymentMethod(rs.getString("paymentMethod"));
+                invoice.setTransportMethod(rs.getString("transportMethod"));
                 invoice.setDiscount(rs.getDouble("discount"));
                 invoice.setDayPayment(rs.getDate("dayPayment"));
                 UserReceive userReceive = new UserReceive();

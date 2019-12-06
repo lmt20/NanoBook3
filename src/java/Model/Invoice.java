@@ -41,7 +41,7 @@ public class Invoice implements Serializable {
         this.transportFee = transportFee;
         this.userReceive = userReceive;
         this.finalPrice = getFinalPrice();
-        this.transportFee = getTransportFree();
+        this.transportFee = getTransportFee();
         this.dayPayment = new java.sql.Date(Calendar.getInstance().getTime().getTime());
     }
 
@@ -53,14 +53,6 @@ public class Invoice implements Serializable {
         this.idUser = idUser;
     }
     
-    public double getTransportFee() {
-        return transportFee;
-    }
-
-    public void setTransportFee(double transportFee) {
-        this.transportFee = transportFee;
-    }
-
     public UserReceive getUserReceive() {
         return userReceive;
     }
@@ -105,15 +97,8 @@ public class Invoice implements Serializable {
         this.discount = discount;
     }
 
-    public String getShippingMethod() {
-        return transportMethod;
-    }
 
-    public void setShippingMethod(String transportMethod) {
-        this.transportMethod = transportMethod;
-    }
-
-    public double getTransportFree() {
+    public double getTransportFee() {
         transportFee = 0;
 
         if (transportMethod.equals("Giao Hàng Tiêu Chuẩn")) {
@@ -122,6 +107,10 @@ public class Invoice implements Serializable {
             transportFee = 30000;
         }
         return transportFee;
+    }
+    
+    public void setTransportFee(double transportFee) {
+        this.transportFee = transportFee;
     }
 
     public void setId(String id) {

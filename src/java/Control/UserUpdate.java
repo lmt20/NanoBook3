@@ -5,7 +5,6 @@
  */
 package Control;
 
-import IO.IOUser;
 import IODB.UserDB;
 import Model.User;
 import java.io.IOException;

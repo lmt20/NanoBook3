@@ -5,7 +5,6 @@
  */
 package Control;
 
-import IO.IOBook;
 import IODB.BookDB;
 import IODB.CatagoryDB;
 import Model.Book;

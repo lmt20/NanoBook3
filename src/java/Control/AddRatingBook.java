@@ -5,7 +5,6 @@
  */
 package Control;
 
-import IO.IOBook;
 import IODB.UserRatingDB;
 import Model.Book;
 import Model.User;
