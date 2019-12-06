@@ -6,6 +6,7 @@
 package Control;
 
 import IO.IOUserTransaction;
+import IODB.InvoiceDB;
 import Model.Invoice;
 import Model.User;
 import Model.UserTransaction;
@@ -67,14 +68,13 @@ public class UserDetailControl extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
+        
         HttpSession session = request.getSession();
         User user = new User();
         if (session.getAttribute("user") != null) {
             user = (User) session.getAttribute("user");
         }
-        UserTransaction userTransaction = IOUserTransaction.getUserTransaction(user);
-        ArrayList<Invoice> listInvoice = userTransaction.getListInvoice();
-        request.setAttribute("userTransaction", userTransaction);
+        ArrayList <Invoice> listInvoice = InvoiceDB.getListInvoiceOfUser(user.getId());
         request.setAttribute("listInvoice", listInvoice);
         String url = "/UserDetail.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);

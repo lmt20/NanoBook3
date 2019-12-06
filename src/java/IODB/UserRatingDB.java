@@ -5,6 +5,8 @@
  */
 package IODB;
 
+import Model.Book;
+import Model.User;
 import Model.UserRating;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,8 +27,8 @@ public class UserRatingDB {
         String query = "Insert into userrating(idBook, idUser, rate) values(?, ?, ?);";
         try {
             ps = connection.prepareStatement(query);
-            ps.setInt(1, Integer.parseInt(userRating.getIdBook()));
-            ps.setInt(2, Integer.parseInt(userRating.getIdUser()));
+            ps.setInt(1, Integer.parseInt(userRating.getBook().getId()));
+            ps.setInt(2, Integer.parseInt(userRating.getUser().getId()));
             ps.setInt(3, userRating.getRate());
             return ps.executeUpdate();
         } catch (SQLException e) {
@@ -45,8 +47,8 @@ public class UserRatingDB {
         String query = "update userrating set rate = ? where idBook=? and idUser = ?;";
         try {
             ps = connection.prepareStatement(query);
-            ps.setInt(2, Integer.parseInt(userRating.getIdBook()));
-            ps.setInt(3, Integer.parseInt(userRating.getIdUser()));
+            ps.setInt(2, Integer.parseInt(userRating.getBook().getId()));
+            ps.setInt(3, Integer.parseInt(userRating.getUser().getId()));
             ps.setInt(1, userRating.getRate());
             return ps.executeUpdate();
         } catch (SQLException e) {
@@ -72,8 +74,10 @@ public class UserRatingDB {
 
             while (rs.next()) {
                 UserRating userRating = new UserRating();
-                userRating.setIdBook(rs.getInt("idBook")+"");
-                userRating.setIdUser(rs.getInt("idUser")+"");
+                Book book = BookDB.getBookById(rs.getInt("idBook")+"");
+                User user = UserDB.getUserById(rs.getInt("idUser")+"");
+                userRating.setBook(book);
+                userRating.setUser(user);
                 userRating.setRate(rs.getInt("rate"));
                 listUserRating.add(userRating);
             }

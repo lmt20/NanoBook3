@@ -5,25 +5,25 @@
  */
 package Control;
 
-import Model.Cart;
-import Model.Invoice;
-import Model.UserReceive;
+import IO.IOBook;
+import IODB.BookDB;
+import Model.Book;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Asus
  */
-@WebServlet(name = "Payment", urlPatterns = {"/Payment"})
-public class Payment extends HttpServlet {
+@WebServlet(name = "CatagoryControl", urlPatterns = {"/CatagoryControl"})
+public class CatagoryControl extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +42,10 @@ public class Payment extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Payment</title>");
+            out.println("<title>Servlet Catagory</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Payment at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Catagory at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,13 +64,17 @@ public class Payment extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        processRequest(request, response);
-        HttpSession session = request.getSession();
-        boolean loginToPayment = false;
-        session.setAttribute("loginToPayment", loginToPayment);
-        String url = "/Payment.jsp";
-
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
+        String idCatagory = request.getParameter("idCatagory");
+//        IOBook.setPathProjectFromServlet(getServletContext().getRealPath("/WEB-INF"));
+        ArrayList<Book> listBooks = BookDB.getListBookOfCatagory(idCatagory);
+        request.setAttribute("listBooks", listBooks);
+//        request.setAttribute("idCatagory", idCatagory);
+        String url = "/Catagory.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response);
+
     }
 
     /**
@@ -84,39 +88,7 @@ public class Payment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("utf-8");
-        HttpSession session = request.getSession();
-        Cart cart = (Cart) session.getAttribute("cart");
-
-        String name = request.getParameter("name");
-        String numberPhone = request.getParameter("numberPhone");
-        String address = request.getParameter("address");
-        String discount = request.getParameter("discount");
-        String idTransportMethod = request.getParameter("transportMethod");
-        String transportMethod = "";
-        if (idTransportMethod.equals("1")) {
-            transportMethod = "Giao Hàng Tiêu Chuẩn";
-        } else if (idTransportMethod.equals("2")) {
-            transportMethod = "Giao Hàng Nhanh";
-        }
-
-        String paymentMethod = "";
-        String idPaymentMethod = request.getParameter("paymentMethod");
-        if (idPaymentMethod.equals("1")) {
-            paymentMethod = "Thanh Toán Khi Nhận Hàng";
-        } else if (idPaymentMethod.equals("2")) {
-            paymentMethod = "Ví Điện Tử";
-        } else if (idPaymentMethod.equals("3")) {
-            paymentMethod = "Thẻ Tín Dụng/Ghi Nợ";
-        }
-
-        UserReceive userReceive = new UserReceive(name, numberPhone, address);
-        Invoice invoice = new Invoice(userReceive, cart, transportMethod, paymentMethod, Double.parseDouble(discount));
-        session.setAttribute("invoice", invoice);
-
-        String url = "/PaymentComplete";
-        response.sendRedirect(request.getContextPath() + url);
+        processRequest(request, response);
     }
 
     /**

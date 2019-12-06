@@ -145,34 +145,36 @@ public class CartControl extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String typeControl = (String) request.getParameter("typeControl");
-        if(typeControl == null){
+        if (typeControl == null) {
             typeControl = "";
         }
         if (typeControl.equals("edit")) {
             editNumBookInCart(request, response);
         } else if (typeControl.equals("delete")) {
             deleteBookInCart(request, response);
-        } else {
+        } else if (typeControl.equals("submit")) {
             String url = "";
             HttpSession session = request.getSession();
             if ((boolean) session.getAttribute("isEmpty") == true) {
                 session.setAttribute("errorNoItemsInCartToPayment", true);
                 url = "/CartControl";
+                response.sendRedirect(request.getContextPath() + url);
+                return;
             } else {
                 if (session.getAttribute("user") != null) {
                     url = "/Payment";
-                    response.sendRedirect(request.getContextPath()+url);
+                    response.sendRedirect(request.getContextPath() + url);
                     return;
                 } else {
                     boolean loginToPayment = true;
                     session.setAttribute("loginToPayment", loginToPayment);
                     url = "/Login";
-                    response.sendRedirect(request.getContextPath()+url);
+                    response.sendRedirect(request.getContextPath() + url);
                     return;
                 }
             }
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
-            dispatcher.forward(request, response);
+//            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
+//            dispatcher.forward(request, response);
         }
 
     }

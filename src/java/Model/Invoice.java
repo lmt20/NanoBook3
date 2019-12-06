@@ -6,7 +6,9 @@
 package Model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Calendar;
 
 /**
  *
@@ -23,11 +25,10 @@ public class Invoice implements Serializable {
     private double discount;
     
 
-    private Date dayPayment;
+    private Date dayPayment ;
     private double finalPrice;
     private String idUser;
     
-    private static int numAutoIncrease = 100000;
     
     public Invoice() {
     }
@@ -41,9 +42,7 @@ public class Invoice implements Serializable {
         this.userReceive = userReceive;
         this.finalPrice = getFinalPrice();
         this.transportFee = getTransportFree();
-        this.dayPayment = new Date();
-        this.numAutoIncrease += (int) (Math.random() * 10000);
-        this.id = "MDH" + numAutoIncrease;
+        this.dayPayment = new java.sql.Date(Calendar.getInstance().getTime().getTime());
     }
 
     public String getIdUser() {
@@ -64,14 +63,6 @@ public class Invoice implements Serializable {
 
     public UserReceive getUserReceive() {
         return userReceive;
-    }
-
-    public static int getNumAutoIncrease() {
-        return numAutoIncrease;
-    }
-
-    public static void setNumAutoIncrease(int numAutoIncrease) {
-        Invoice.numAutoIncrease = numAutoIncrease;
     }
 
     public void setUserReceive(UserReceive userReceive) {

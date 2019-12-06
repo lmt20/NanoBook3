@@ -6,6 +6,7 @@
 package Control;
 
 import IO.IOBook;
+import IODB.UserCommentDB;
 import Model.Book;
 import Model.User;
 import Model.UserComment;
@@ -89,13 +90,11 @@ public class AddCommentBook extends HttpServlet {
             return;
         } else {
             User user = (User) session.getAttribute("user");
+            Book selectingBook = (Book) session.getAttribute("selectingBook");
             String commentInput = request.getParameter("commentInput");
-            UserComment userComment = new UserComment(user, commentInput);
-            Book book = (Book) session.getAttribute("selectingBook");
-            book.addUserComment(userComment);
-            IOBook.writeBook(book);
-            session.setAttribute("selectingBook", book);
-            url = "/BookDetail";
+            UserComment userComment = new UserComment(selectingBook, user, commentInput);
+            UserCommentDB.insert(userComment);
+            url = "/BookDetailControl";
             response.sendRedirect(request.getContextPath() + url);
             return;
         }

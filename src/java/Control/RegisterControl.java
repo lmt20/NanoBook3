@@ -5,7 +5,7 @@
  */
 package Control;
 
-import IO.IOUser;
+import IODB.UserDB;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -79,7 +79,7 @@ public class RegisterControl extends HttpServlet {
         String username = (String) request.getParameter("username");
         String password = (String) request.getParameter("password");
         String url = "";
-        if (IOUser.checkExistUser(username) == true) {
+        if (UserDB.checkUserExist(username) == true) {
             boolean existedUser = true;
             request.setAttribute("existedUser", existedUser);
             url = "/Register.jsp";
@@ -109,8 +109,8 @@ public class RegisterControl extends HttpServlet {
         user.setName(name);
         user.setAddress(address);
         user.setNumberPhone(numberPhone);
-
-        IOUser.addUser(user);
+        
+        UserDB.insert(user);
 //        session.setAttribute("user", user);
         String url = "/Login.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);

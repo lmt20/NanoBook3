@@ -21,15 +21,15 @@ public class UserDB {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
-        String query = "insert into user (idUser, username, password, name, address, numberPhone) values(?,?,?,?,?,?);";
+        String query = "insert into user ( username, password, name, address, numberPhone) values(?,?,?,?,?);";
         try {
             ps = connection.prepareStatement(query);
-            ps.setInt(1, Integer.parseInt(user.getId()));
-            ps.setString(2, user.getUsername());
-            ps.setString(3, user.getPassword());
-            ps.setString(4, user.getName());
-            ps.setString(5, user.getAddress());
-            ps.setString(6, user.getNumberPhone());
+//            ps.setInt(1, Integer.parseInt(user.getId()));
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getName());
+            ps.setString(4, user.getAddress());
+            ps.setString(5, user.getNumberPhone());
             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,7 +77,7 @@ public class UserDB {
             User user = null;
             if (rs.next()) {
                 user = new User();
-                user.setId(rs.getInt("idUser")+"");
+                user.setId(rs.getInt("idUser") + "");
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
@@ -95,9 +95,70 @@ public class UserDB {
         }
     }
 
+    public static User getUserById(String idUser) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = "SELECT * FROM user WHERE idUser=?;";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, idUser);
+            rs = ps.executeQuery();
+            User user = null;
+            if (rs.next()) {
+                user = new User();
+                user.setId(rs.getInt("idUser") + "");
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setName(rs.getString("name"));
+                user.setAddress(rs.getString("address"));
+                user.setNumberPhone(rs.getString("numberPhone"));
+            }
+            return user;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
+
+    public static boolean checkUserExist(String username) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = "SELECT * FROM user WHERE username=?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+            User user = null;
+            if (rs.next()) {
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+
+        }
+    }
+
     public static void main(String[] args) {
         String id = "1";
-        User user = getUser("lmtbit","truongdzai");
+        User user = getUser("lmtbit", "truongdzai");
         System.out.println(user.getId() + " " + user.getName() + " " + user.getAddress());
     }
+
 }

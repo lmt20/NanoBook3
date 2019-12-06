@@ -13,33 +13,33 @@ import java.io.Serializable;
  */
 public class UserComment implements Serializable {
 
-    private String idBook;
-    private String idUser;
+    private Book book;
+    private User user;
     private String comment;
 
     public UserComment() {
     }
 
-    public UserComment(String idBook, String idUser, String comment) {
-        this.idBook = idBook;
-        this.idUser = idUser;
+    public UserComment(Book book, User user, String comment) {
+        this.book = book;
+        this.user = user;
         this.comment = comment;
     }
 
-    public String getIdBook() {
-        return idBook;
+    public Book getBook() {
+        return book;
     }
 
-    public void setIdBook(String idBook) {
-        this.idBook = idBook;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
-    public String getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getComment() {
@@ -49,6 +49,8 @@ public class UserComment implements Serializable {
     public void setComment(String comment) {
         this.comment = comment;
     }
+    
+    
     
     
 

@@ -71,7 +71,7 @@
 
             </table>
             <br>
-            <form action="InvoiceControl" method="post">
+            <form action="PaymentComplete" method="post">
                 <input type="submit" value="Hoàn Tất Thanh Toán">
                 <input type="hidden" name="completeInvoice" value="1">
             </form>

@@ -53,38 +53,12 @@ public class Book implements Serializable {
         this.listUserRating = listUserRating;
     }
 
-//    public void addUserRating(UserRating userRating) {
-//        if (listUserRating == null) {
-//            listUserRating = new ArrayList<UserRating>();
-//        }
-//        for (UserRating uRating : listUserRating) {
-//            if (uRating.getUser().getUsername().equals(userRating.getUser().getUsername())) {
-//                listUserRating.remove(uRating);
-//                break;
-//            }
-//        }
-//        listUserRating.add(0,userRating);
-//    }
-
     public ArrayList<UserComment> getListUserComment() {
         return listUserComment;
     }
 
     public void setListUserComment(ArrayList<UserComment> listUserComment) {
         this.listUserComment = listUserComment;
-    }
-
-    public void addUserComment(UserComment userComment) {
-        if (listUserComment == null) {
-            listUserComment = new ArrayList<UserComment>();
-        }
-//        for (UserComment uComment : listUserComment) {
-//            if (uComment.getUser().getUsername().equals(userComment.getUser().getUsername())) {
-//                listUserComment.remove(uComment);
-//                break;
-//            }
-//        }
-        listUserComment.add(0, userComment);
     }
 
     public double getFinalRating() {

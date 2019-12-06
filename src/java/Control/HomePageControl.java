@@ -6,7 +6,10 @@
 package Control;
 
 import IO.IOBook;
+import IODB.BookDB;
+import IODB.CatagoryDB;
 import Model.Book;
+import Model.Catagory;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -68,16 +71,17 @@ public class HomePageControl extends HttpServlet {
 //        processRequest(request, response);
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
-        IOBook.setPathProjectFromServlet(getServletContext().getRealPath("/WEB-INF"));
-        ArrayList<Book> listBooks = IOBook.getListBook();
+//        IOBook.setPathProjectFromServlet(getServletContext().getRealPath("/WEB-INF"));
+        
         HttpSession session = request.getSession();
         if (session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
         }
         
+        ArrayList<Book> listBooks = BookDB.getListBook();
         request.setAttribute("listBooks", listBooks);
 
-        ArrayList<String> listCatagory = IOBook.getListCatagory();
+        ArrayList<Catagory> listCatagory = CatagoryDB.getListCatagory();
         session.setAttribute("listCatagory", listCatagory);
 
         String url = "/HomePage.jsp";

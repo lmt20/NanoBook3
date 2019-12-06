@@ -23,6 +23,11 @@ import java.util.ArrayList;
 public class InvoiceDB {
 
     public static int insert(Invoice invoice) {
+        ArrayList<LineBook> listLineBook = invoice.getCart().getListLine();
+        for(LineBook lineBook: listLineBook){
+            lineBook.setIdInvoice(invoice.getId());
+            LineBookDB.insert(lineBook);
+        }
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
@@ -104,7 +109,7 @@ public class InvoiceDB {
 
             while (rs.next()) {
                 Invoice invoice = getInvoiceById(rs.getInt("idInvoice") + "");
-                listInvoice.add(invoice);
+                listInvoice.add(0,invoice);
             }
             return listInvoice;
         } catch (SQLException e) {

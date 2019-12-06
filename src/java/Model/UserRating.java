@@ -11,34 +11,35 @@ import java.io.Serializable;
  *
  * @author Asus
  */
-public class UserRating implements Serializable{
-    private String idBook;
-    private String idUser;
+public class UserRating implements Serializable {
+
+    private Book book;
+    private User user;
     private int rate;
 
     public UserRating() {
     }
 
-    public UserRating(String idBook, String idUser, int rate) {
-        this.idBook = idBook;
-        this.idUser = idUser;
+    public UserRating(Book book, User user, int rate) {
+        this.book = book;
+        this.user = user;
         this.rate = rate;
     }
 
-    public String getIdBook() {
-        return idBook;
+    public Book getBook() {
+        return book;
     }
 
-    public void setIdBook(String idBook) {
-        this.idBook = idBook;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
-    public String getIdUser() {
-        return idUser;
+    public User getUser() {
+        return user;
     }
 
-    public void setIdUser(String idUser) {
-        this.idUser = idUser;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getRate() {
@@ -48,5 +49,7 @@ public class UserRating implements Serializable{
     public void setRate(int rate) {
         this.rate = rate;
     }
+    
+    
 
 }

@@ -72,7 +72,7 @@
         <h3> THÔNG TIN NGƯỜI NHẬN </h3>
         <table cellspacing="15" border="0">
             <tr>
-            <form action="InvoiceControl" method="post" id="idInvoice" >
+            <form action="Payment" method="post" id="idInvoice" >
                 <td> Họ Tên </td>
                 <td><input type="text" name="name" value="${user.name}"></td>
                 <td> Số Điện Thoại </td>

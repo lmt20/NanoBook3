@@ -30,7 +30,7 @@
         <hr>
         <div>
             <c:forEach var="catagory" items="${sessionScope.listCatagory}">
-                <a href='<c:url value="Catagory?catagory=${catagory}"/>'> ${catagory} </a> |
+                <a href='<c:url value="CatagoryControl?idCatagory=${catagory.id}"/>'> ${catagory.name} </a> |
                 </c:forEach>
         </div>
         <hr>

@@ -5,8 +5,8 @@
  */
 package Control;
 
-import IO.IOUser;
-import IO.IOUtils;
+import IODB.UserDB;
+import IODB.Utils;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,8 +42,9 @@ public class Login extends HttpServlet {
         String username = (String) request.getParameter("username");
         String password = (String) request.getParameter("password");
         String url = "";
-        if (IOUser.checkValidateUser(username, password) != null) {
-            User user = IOUser.checkValidateUser(username, password);
+
+        if (UserDB.getUser(username, password) != null) {
+            User user = UserDB.getUser(username, password);
             request.setAttribute("errorLogin", false);
             Cookie usernameCookie = new Cookie("username", username);
             usernameCookie.setMaxAge(60 * 60 * 24 * 365 * 2);
@@ -55,12 +56,32 @@ public class Login extends HttpServlet {
             passwordCookie.setPath("/");
             response.addCookie(passwordCookie);
 //            
+
             session.setAttribute("user", user);
+//            if (session.getAttribute("loginToPayment") != null && (boolean) session.getAttribute("loginToPayment") == true) {
+//                url = "/Payment";
+//                session.setAttribute("loginToPayment", false);
+//            } else {
+//                url = "/index.jsp";
+//            }
             if (session.getAttribute("loginToPayment") != null && (boolean) session.getAttribute("loginToPayment") == true) {
                 url = "/Payment";
+                session.setAttribute("loginToPayment", false);
+            } else if (session.getAttribute("loginToComment") != null && (boolean) session.getAttribute("loginToComment") == true) {
+                url = "/BookDetailControl";
+                session.setAttribute("loginToComment", false);
+                response.sendRedirect(request.getContextPath() + url);
+                return;
+            } else if (session.getAttribute("loginToRate") != null && (boolean) session.getAttribute("loginToRate") == true) {
+                url = "/BookDetailControl";
+                session.setAttribute("loginToRate", false);
+                response.sendRedirect(request.getContextPath() + url);
+                return;
             } else {
-                url = "/index.jsp";
+                url = "/UserDetailControl";
             }
+            response.sendRedirect(request.getContextPath() + url);
+            return;
         } else {
             request.setAttribute("errorLogin", true);
             url = "/Login.jsp";
@@ -91,25 +112,25 @@ public class Login extends HttpServlet {
             User user = (User) session.getAttribute("user");
             url = "/UserDetailControl";
         } else {
-            Cookie[] cookies = request.getCookies();
-            String username = IOUtils.getCookieValue(cookies, "username");
-            String password = IOUtils.getCookieValue(cookies, "password");
-            if (IOUser.checkValidateUser(username, password) != null) {
-                User user = IOUser.checkValidateUser(username, password);
-                session.setAttribute("user", user);
-            }
+//            Cookie[] cookies = request.getCookies();
+//            String username = Utils.getCookieValue(cookies, "username");
+//            String password = Utils.getCookieValue(cookies, "password");
+//            if (UserDB.getUser(username, password) != null) {
+//                User user = UserDB.getUser(username, password);
+//                session.setAttribute("user", user);
+//            }
             if (session.getAttribute("user") != null) {
                 User user = (User) session.getAttribute("user");
                 if (session.getAttribute("loginToPayment") != null && (boolean) session.getAttribute("loginToPayment") == true) {
                     url = "/Payment";
                     session.setAttribute("loginToPayment", false);
                 } else if (session.getAttribute("loginToComment") != null && (boolean) session.getAttribute("loginToComment") == true) {
-                    url = "/BookDetail";
+                    url = "/BookDetailControl";
                     session.setAttribute("loginToComment", false);
                     response.sendRedirect(request.getContextPath() + url);
                     return;
                 } else if (session.getAttribute("loginToRate") != null && (boolean) session.getAttribute("loginToRate") == true) {
-                    url = "/BookDetail";
+                    url = "/BookDetailControl";
                     session.setAttribute("loginToRate", false);
                     response.sendRedirect(request.getContextPath() + url);
                     return;

@@ -5,6 +5,8 @@
  */
 package IODB;
 
+import Model.Book;
+import Model.User;
 import Model.UserComment;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,8 +27,8 @@ public class UserCommentDB {
         String query = "Insert into UserComment(idBook, idUser, comment) values(?, ?, ?);";
         try {
             ps = connection.prepareStatement(query);
-            ps.setInt(1, Integer.parseInt(userComment.getIdBook()));
-            ps.setInt(2, Integer.parseInt(userComment.getIdUser()));
+            ps.setInt(1, Integer.parseInt(userComment.getBook().getId()));
+            ps.setInt(2, Integer.parseInt(userComment.getUser().getId()));
             ps.setString(3, userComment.getComment());
             return ps.executeUpdate();
         } catch (SQLException e) {
@@ -46,8 +48,8 @@ public class UserCommentDB {
         String query = "update usercomment set comment = ? where idBook=? and idUser = ?;";
         try {
             ps = connection.prepareStatement(query);
-            ps.setInt(2, Integer.parseInt(userComment.getIdBook()));
-            ps.setInt(3, Integer.parseInt(userComment.getIdUser()));
+            ps.setInt(2, Integer.parseInt(userComment.getBook().getId()));
+            ps.setInt(3, Integer.parseInt(userComment.getUser().getId()));
             ps.setString(1, userComment.getComment());
             return ps.executeUpdate();
         } catch (SQLException e) {
@@ -73,10 +75,12 @@ public class UserCommentDB {
 
             while (rs.next()) {
                 UserComment userComment = new UserComment();
-                userComment.setIdBook(rs.getInt("idBook")+"");
-                userComment.setIdUser(rs.getInt("idUser")+"");
+                User user = UserDB.getUserById(rs.getInt("idUser")+"");
+                Book book = BookDB.getBookById(rs.getInt("idBook")+"");
+                userComment.setUser(user);
+                userComment.setBook(book);
                 userComment.setComment(rs.getString("comment"));
-                listUserComment.add(userComment);
+                listUserComment.add(0,userComment);
             }
             return listUserComment;
         } catch (SQLException e) {

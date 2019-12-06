@@ -6,12 +6,14 @@
 package Control;
 
 import IO.IOBook;
+import IODB.UserRatingDB;
 import Model.Book;
 import Model.User;
 import Model.UserComment;
 import Model.UserRating;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +45,7 @@ public class AddRatingBook extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddRatingBook</title>");            
+            out.println("<title>Servlet AddRatingBook</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet AddRatingBook at " + request.getContextPath() + "</h1>");
@@ -87,13 +89,23 @@ public class AddRatingBook extends HttpServlet {
             return;
         } else {
             User user = (User) session.getAttribute("user");
+            Book selectingBook = (Book) session.getAttribute("selectingBook");
             int ratingInput = Integer.parseInt(request.getParameter("ratingInput"));
-            UserRating userRating = new UserRating(user, ratingInput);
-            Book book = (Book) session.getAttribute("selectingBook");
-            book.addUserRating(userRating);
-            IOBook.writeBook(book);
-            session.setAttribute("selectingBook", book);
-            url = "/BookDetail";
+            UserRating userRating = new UserRating(selectingBook, user, ratingInput);
+            ArrayList<UserRating> listUserRating = UserRatingDB.getListUserRating(selectingBook.getId());
+            boolean dg = false;
+            for (UserRating uRating : listUserRating) {
+                if (uRating.getBook().getId().equals(userRating.getBook().getId()) &&
+                        uRating.getUser().getId().equals(userRating.getUser().getId())) {
+                    dg = true;
+                    UserRatingDB.update(userRating);
+                    break;
+                }
+            }
+            if (dg == false) {
+                UserRatingDB.insert(userRating);
+            }
+            url = "/BookDetailControl";
             response.sendRedirect(request.getContextPath() + url);
             return;
         }

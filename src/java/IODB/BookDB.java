@@ -75,7 +75,7 @@ public class BookDB {
             pool.freeConnection(connection);
         }
     }
-
+    
     public static ArrayList<Book> getListBook() {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();

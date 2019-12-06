@@ -5,7 +5,7 @@
         <c:forEach var="book" items="${listBooks}" varStatus="status">
             <td style="text-align: center; align-content: center; width: 250px">
                 <img src="${book.image}" width="150" height="220" alt="${book.image}"/> <br>
-                <a href="<c:url value='BookDetail?bookId=${book.id}' />"> ${book.name}</a> <br>
+                <a href="<c:url value='BookDetailControl?bookId=${book.id}' />"> ${book.name}</a> <br>
             </td>
             <c:if test="${status.count%6 ==0}">
             </tr>

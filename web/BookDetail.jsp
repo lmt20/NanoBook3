@@ -5,6 +5,22 @@
     function callServlet() {
         document.forms["addRating"].submit();
     }
+    function isValidNumber(string) {
+        var test = !isNaN(string) && Number.isInteger(parseInt(string)) && parseInt(string) > 0;
+        return test;
+    }
+    function checkInputNumber() {
+        var signUpForm = document.getElementById('signUpForm');
+        var inputNumber = document.getElementById("inputNumber");
+        var test = isValidNumber(inputNumber.value);
+        if (test == true) {
+            signUpForm.submit();
+        }
+        else{
+            var errorMessage = document.getElementById("errorMessage");
+            errorMessage.hidden = false;
+        }
+    }
 </script>
 <div>
     <table>
@@ -29,10 +45,12 @@
                         Tác Giả: ${sessionScope.selectingBook.author}<br>
                         Giá Bán: ${sessionScope.selectingBook.price} VNĐ <br>
                     </h3>
-                    <form action="BookDetail" method='post'>
+                    <form action="BookDetailControl" method='post' id="signUpForm"  >
                         <h2>Lựa Chọn Số Lượng</h2> 
-                        <input style="width: 60px" type="text" name="numBook">
-                        <input type="submit" value="Chọn Mua">
+                        <input style="width: 60px" type="text" name="numBook" id="inputNumber">
+                        <input type="submit" hidden >
+                        <input type="button" value="Chọn Mua"  onclick="checkInputNumber();" >
+                        <div id="errorMessage" hidden="true" ><p style="color: darkorange">Số lượng bạn nhập không hợp lệ. Xin vui lòng nhập lại!</p> </div>
                     </form>
                     <br><br>
                 </div>

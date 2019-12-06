@@ -1,9 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:import url="/WEB-INF/includes/header.jsp" />
 <div>
-    <h1> GIỎ HÀNG </h1> <br>
-</div>
-<div>
     <c:if test="${sessionScope.errorNoItemsInCartToPayment == true}">
         <h3> Vui lòng thêm ít nhất một sản phẩm vào giỏ hàng trước khi tiến hành đặt hàng! </h3> <br>    
         <c:set scope="session" var="errorNoItemsInCartToPayment" value="false" ></c:set>
@@ -17,8 +14,7 @@
     <c:if test="${sessionScope.isEmpty != true}">
         <table cellspacing="20" border="0">
             <tr>
-            
-                <td></td>
+                <td> <h2 style="color: cornflowerblue"> GIỎ HÀNG </h2></td>
                 <td> </td>
                 <td> Số Lượng </td>
                 <td> Giá </td>
@@ -49,6 +45,7 @@
         <h3> TỔNG CỘNG: ${cart.totalPrice} VND </h3>
     </c:if>
     <form action="CartControl" method="post">
+        <input type="hidden" name="typeControl" value="submit">
         <input type="submit" value="THANH TOÁN">
     </form>
     <a href="index.jsp"> Tiếp Tục Mua Hàng</a>

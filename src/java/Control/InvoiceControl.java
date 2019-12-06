@@ -6,6 +6,7 @@
 package Control;
 
 import IO.IOUserTransaction;
+import IODB.InvoiceDB;
 import Model.Cart;
 import Model.Invoice;
 import Model.User;
@@ -67,29 +68,28 @@ public class InvoiceControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
-//        HttpSession session = request.getSession();
+
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("utf-8");
+       
         HttpSession session = request.getSession();
         User user = new User();
         if (session.getAttribute("user") != null) {
             user = (User) session.getAttribute("user");
         }
-        UserTransaction userTransaction = IOUserTransaction.getUserTransaction(user);
-        ArrayList<Invoice> listInvoice = userTransaction.getListInvoice();
+        
+        
         String idInvoice = (String) request.getParameter("idInvoice");
-        Invoice selectedInvoice = new Invoice();
-        for (Invoice iv : listInvoice) {
-            if (iv.getId().equals(idInvoice)) {
-                selectedInvoice = iv;
-                break;
-            }
-        }
+        Invoice selectedInvoice = InvoiceDB.getInvoiceById(idInvoice);
+
         request.setAttribute("selectedInvoice", selectedInvoice);
-        request.setAttribute("userTransaction", userTransaction);
+        ArrayList <Invoice> listInvoice = InvoiceDB.getListInvoiceOfUser(user.getId());
         request.setAttribute("listInvoice", listInvoice);
+        
         String url = "/UserDetail.jsp";
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
         dispatcher.forward(request, response);
+
     }
 
     /**
@@ -103,57 +103,6 @@ public class InvoiceControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
-        if (request.getParameter("completeInvoice") != null) {
-            HttpSession session = request.getSession();
-
-            session.removeAttribute("cart");
-            Invoice invoice = (Invoice) session.getAttribute("invoice");
-            User user = (User) session.getAttribute("user");
-            UserTransaction userTransaction = IOUserTransaction.getUserTransaction(user);
-            userTransaction.addInvoice(invoice);
-            IOUserTransaction.addUserTransaction(userTransaction);
-            session.removeAttribute("invoice");
-
-            String url = "/UserDetailControl";
-            response.sendRedirect(request.getContextPath() + url);
-//            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
-//            dispatcher.forward(request, response);
-        } else {
-
-            HttpSession session = request.getSession();
-            Cart cart = (Cart) session.getAttribute("cart");
-
-            String name = request.getParameter("name");
-            String numberPhone = request.getParameter("numberPhone");
-            String address = request.getParameter("address");
-            String discount = request.getParameter("discount");
-            String idTransportMethod = request.getParameter("transportMethod");
-            String transportMethod = "";
-            if (idTransportMethod.equals("1")) {
-                transportMethod = "Giao Hàng Tiêu Chuẩn";
-            } else if (idTransportMethod.equals("2")) {
-                transportMethod = "Giao Hàng Nhanh";
-            }
-
-            String paymentMethod = "";
-            String idPaymentMethod = request.getParameter("paymentMethod");
-            if (idPaymentMethod.equals("1")) {
-                paymentMethod = "Thanh Toán Khi Nhận Hàng";
-            } else if (idPaymentMethod.equals("2")) {
-                paymentMethod = "Ví Điện Tử";
-            } else if (idPaymentMethod.equals("3")) {
-                paymentMethod = "Thẻ Tín Dụng/Ghi Nợ";
-            }
-
-            UserReceive userReceive = new UserReceive(name, numberPhone, address);
-            Invoice invoice = new Invoice(userReceive, cart, transportMethod, paymentMethod, Double.parseDouble(discount));
-            session.setAttribute("invoice", invoice);
-
-            String url = "/Invoice.jsp";
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
-            dispatcher.forward(request, response);
-        }
     }
 
     /**

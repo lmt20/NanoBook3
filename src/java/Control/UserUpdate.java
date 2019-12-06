@@ -6,6 +6,7 @@
 package Control;
 
 import IO.IOUser;
+import IODB.UserDB;
 import Model.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -90,7 +91,8 @@ public class UserUpdate extends HttpServlet {
         user.setName(name);
         user.setAddress(address);
         user.setNumberPhone(numberPhone);
-        IOUser.updateUser(user);
+//        IOUser.updateUser(user);
+        UserDB.update(user);
         session.setAttribute("user", user);
         
         String ms = "Cập nhập thành công";
